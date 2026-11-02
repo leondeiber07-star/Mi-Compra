@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Mi Compra - Calculadora de Compras Venezuela</title>
+  <meta name="description" content="Calculadora de compras para supermercados en Venezuela con tasas DolarAPI en vivo (USD, EUR, Bolívares)">
+  <meta name="theme-color" content="#0d2c55">
+
+  <!-- Manifest PWA y Favicons -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon-512.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+
+  <!-- Fuente Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Estilos de la aplicación -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Contenedor del dispositivo móvil -->
+  <div class="device-container">
+
+    <!-- HEADER PRINCIPAL -->
+    <header class="app-header">
+      <!-- Cinta ondeada auténtica de la bandera de Venezuela con 8 estrellas -->
+      <div class="header-flag-ribbon" aria-hidden="true">
+        <svg viewBox="0 0 160 75" width="160" height="75" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="ribbonShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="-2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.45"/>
+            </filter>
+
+            <linearGradient id="yellowRibbon" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#E5A800"/>
+              <stop offset="40%" stop-color="#FFD100"/>
+              <stop offset="70%" stop-color="#FFE033"/>
+              <stop offset="100%" stop-color="#FFCC00"/>
+            </linearGradient>
+
+            <linearGradient id="blueRibbon" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00247D"/>
+              <stop offset="50%" stop-color="#0038A8"/>
+              <stop offset="100%" stop-color="#004AD7"/>
+            </linearGradient>
+
+            <linearGradient id="redRibbon" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#9E0B1C"/>
+              <stop offset="50%" stop-color="#CF142B"/>
+              <stop offset="100%" stop-color="#EA1D36"/>
+            </linearGradient>
+
+            <linearGradient id="sheenWave" x1="0.2" y1="0.8" x2="0.8" y2="0.2">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+              <stop offset="35%" stop-color="#ffffff" stop-opacity="0.32"/>
+              <stop offset="65%" stop-color="#ffffff" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+            </linearGradient>
+
+            <g id="star-5">
+              <polygon points="0,-2.3 0.68,-0.75 2.3,-0.75 0.98,0.22 1.48,1.75 0,0.82 -1.48,1.75 -0.98,0.22 -2.3,-0.75 -0.68,-0.75" fill="#FFFFFF"/>
+            </g>
+          </defs>
+
+          <g filter="url(#ribbonShadow)">
+            <!-- Franja Amarilla (Superior) -->
+            <path d="M 12 75 C 36 46, 68 14, 116 14 C 134 14, 148 18, 160 22 L 160 33 C 148 29, 134 25, 116 25 C 72 25, 42 52, 23 75 Z" fill="url(#yellowRibbon)"/>
+            <path d="M 12 75 C 36 46, 68 14, 116 14 C 134 14, 148 18, 160 22 L 160 33 C 148 29, 134 25, 116 25 C 72 25, 42 52, 23 75 Z" fill="url(#sheenWave)"/>
+
+            <!-- Franja Azul (Media) -->
+            <path d="M 23 75 C 42 52, 72 25, 116 25 C 134 25, 148 29, 160 33 L 160 45 C 147 41, 133 37, 116 37 C 76 37, 49 57, 34 75 Z" fill="url(#blueRibbon)"/>
+            <path d="M 23 75 C 42 52, 72 25, 116 25 C 134 25, 148 29, 160 33 L 160 45 C 147 41, 133 37, 116 37 C 76 37, 49 57, 34 75 Z" fill="url(#sheenWave)"/>
+
+            <!-- 8 Estrellas Blancas en Arco en la Franja Azul -->
+            <use href="#star-5" x="48" y="58" transform="rotate(-30, 48, 58)"/>
+            <use href="#star-5" x="61" y="49" transform="rotate(-23, 61, 49)"/>
+            <use href="#star-5" x="75" y="42" transform="rotate(-15, 75, 42)"/>
+            <use href="#star-5" x="90" y="37" transform="rotate(-7, 90, 37)"/>
+            <use href="#star-5" x="105" y="34" transform="rotate(0, 105, 34)"/>
+            <use href="#star-5" x="120" y="33" transform="rotate(7, 120, 33)"/>
+            <use href="#star-5" x="135" y="34" transform="rotate(15, 135, 34)"/>
+            <use href="#star-5" x="149" y="38" transform="rotate(22, 149, 38)"/>
+
+            <!-- Franja Roja (Inferior) -->
+            <path d="M 34 75 C 49 57, 76 37, 116 37 C 133 37, 147 41, 160 45 L 160 57 C 146 53, 132 49, 116 49 C 80 49, 56 62, 46 75 Z" fill="url(#redRibbon)"/>
+            <path d="M 34 75 C 49 57, 76 37, 116 37 C 133 37, 147 41, 160 45 L 160 57 C 146 53, 132 49, 116 49 C 80 49, 56 62, 46 75 Z" fill="url(#sheenWave)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="header-top">
+        <div class="header-brand">
+          <div class="brand-cart-icon" aria-hidden="true">
+            <svg viewBox="85 105 345 330" width="46" height="42" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="hdrShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#020617" flood-opacity="0.45"/>
+                </filter>
+                <filter id="hdrGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="6" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+                <linearGradient id="hdrCartGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="25%" stop-color="#fef08a"/>
+                  <stop offset="65%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+                <linearGradient id="hdrCartGrid" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+                  <stop offset="100%" stop-color="#fde68a" stop-opacity="0.55"/>
+                </linearGradient>
+                <linearGradient id="hdrCoinUsd" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#34d399"/>
+                  <stop offset="50%" stop-color="#059669"/>
+                  <stop offset="100%" stop-color="#064e3b"/>
+                </linearGradient>
+                <linearGradient id="hdrCoinUsdFace" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#10b981"/>
+                  <stop offset="100%" stop-color="#047857"/>
+                </linearGradient>
+                <linearGradient id="hdrCoinBs" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#fef08a"/>
+                  <stop offset="50%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#b45309"/>
+                </linearGradient>
+                <linearGradient id="hdrCoinBsFace" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fbbf24"/>
+                  <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+                <linearGradient id="hdrHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Monedas Flotantes de Conversión -->
+              <g filter="url(#hdrShadow)">
+                <!-- 1. Moneda Secundaria: Bs. (Bolívares en Oro Ámbar) -->
+                <circle cx="195" cy="205" r="54" fill="url(#hdrCoinBs)"/>
+                <circle cx="195" cy="205" r="46" fill="url(#hdrCoinBsFace)"/>
+                <path d="M 152 195 A 46 46 0 0 1 238 195 C 230 178, 160 178, 152 195 Z" fill="url(#hdrHighlight)"/>
+                <text x="195" y="217" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="-1">Bs.</text>
+
+                <!-- 2. Moneda Principal: USD ($ en Verde Esmeralda) -->
+                <circle cx="300" cy="180" r="66" fill="url(#hdrCoinUsd)"/>
+                <circle cx="300" cy="180" r="56" fill="url(#hdrCoinUsdFace)"/>
+                <path d="M 248 168 A 56 56 0 0 1 352 168 C 342 148, 258 148, 248 168 Z" fill="url(#hdrHighlight)"/>
+                <text x="300" y="201" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="62" font-weight="900" fill="#ffffff" text-anchor="middle">$</text>
+              </g>
+
+              <!-- Destellos de Brillo (Sparkles) -->
+              <g fill="#ffffff" filter="url(#hdrGlow)">
+                <path d="M 370 120 Q 370 135 385 135 Q 370 135 370 150 Q 370 135 355 135 Q 370 135 370 120 Z"/>
+                <path d="M 135 155 Q 135 165 145 165 Q 135 165 135 175 Q 135 165 125 165 Q 135 165 135 155 Z" transform="scale(0.8) translate(30, 20)"/>
+              </g>
+
+              <!-- Carrito de Compras Heroico -->
+              <g filter="url(#hdrShadow)">
+                <path d="M 175 258 L 388 258" stroke="url(#hdrCartGrid)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 190 298 L 372 298" stroke="url(#hdrCartGrid)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 235 235 L 218 332" stroke="url(#hdrCartGrid)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 292 235 L 280 332" stroke="url(#hdrCartGrid)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 348 235 L 340 332" stroke="url(#hdrCartGrid)" stroke-width="7" stroke-linecap="round"/>
+
+                <path d="M 102 208 L 148 208 L 198 344 L 378 344 L 414 235 L 170 235" 
+                      fill="none" 
+                      stroke="url(#hdrCartGold)" 
+                      stroke-width="19" 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round"/>
+
+                <path d="M 200 376 L 360 376" stroke="#94a3b8" stroke-width="9" stroke-linecap="round"/>
+                <path d="M 215 344 L 215 376 M 345 344 L 345 376" stroke="#94a3b8" stroke-width="8" stroke-linecap="round"/>
+
+                <!-- Ruedas -->
+                <g transform="translate(215, 400)">
+                  <circle cx="0" cy="0" r="28" fill="#1e293b"/>
+                  <circle cx="0" cy="0" r="23" fill="url(#hdrCartGold)"/>
+                  <circle cx="0" cy="0" r="14" fill="#0f172a"/>
+                  <circle cx="0" cy="0" r="6" fill="#f8fafc"/>
+                </g>
+                <g transform="translate(345, 400)">
+                  <circle cx="0" cy="0" r="28" fill="#1e293b"/>
+                  <circle cx="0" cy="0" r="23" fill="url(#hdrCartGold)"/>
+                  <circle cx="0" cy="0" r="14" fill="#0f172a"/>
+                  <circle cx="0" cy="0" r="6" fill="#f8fafc"/>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Mi Compra</h1>
+            <p>Calculadora de Compras</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+      <!-- PESTAÑA 1: INICIO (CALCULADORA ACTIVA) -->
+      <section id="tab-inicio" class="tab-pane active">
+
+        <!-- CARD 1: TASAS ACTUALES -->
+        <div class="card rates-card">
+          <div class="rates-header">
+            <div class="rates-title-group">
+              <div class="rates-live-badge">
+                <span class="live-dot"></span>
+                <span>Tasas Actuales</span>
+              </div>
+              <span class="rates-subtitle" id="rates-subtitle">Actualizado: 30/10/2026 - 09:40 AM</span>
+            </div>
+
+            <button class="btn-refresh" id="btn-refresh-rates" title="Actualizar tasas de DolarAPI">
+              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Grilla de las 4 tasas -->
+          <div class="rates-grid">
+            <!-- USD Oficial -->
+            <div class="rate-item-card usd active" data-rate="usd_oficial" title="Toca para usar esta tasa | Doble clic para editar">
+              <div class="rate-badge-icon usd">$</div>
+              <span class="rate-label-text">USD Oficial</span>
+              <span class="rate-value-text" id="val-usd-oficial">Bs. 889,26</span>
+              <span class="rate-date-badge" id="date-usd-oficial" style="display:none;">30/10/2026</span>
+            </div>
+
+            <!-- USD Paralelo -->
+            <div class="rate-item-card usd" data-rate="usd_paralelo" title="Toca para usar esta tasa | Doble clic para editar">
+              <div class="rate-badge-icon usd">$</div>
+              <span class="rate-label-text">USD Paralelo</span>
+              <span class="rate-value-text" id="val-usd-paralelo">Bs. 1.025,45</span>
+              <span class="rate-date-badge" id="date-usd-paralelo" style="display:none;">01/11/2026 - 02:01 PM</span>
+            </div>
+
+            <!-- EUR Oficial -->
+            <div class="rate-item-card eur" data-rate="eur_oficial" title="Toca para usar esta tasa | Doble clic para editar">
+              <div class="rate-badge-icon eur">€</div>
+              <span class="rate-label-text">EUR Oficial</span>
+              <span class="rate-value-text" id="val-eur-oficial">Bs. 903,12</span>
+              <span class="rate-date-badge" id="date-eur-oficial" style="display:none;">30/10/2026</span>
+            </div>
+
+            <!-- EUR Paralelo -->
+            <div class="rate-item-card eur" data-rate="eur_paralelo" title="Toca para usar esta tasa | Doble clic para editar">
+              <div class="rate-badge-icon eur">€</div>
+              <span class="rate-label-text">EUR Paralelo</span>
+              <span class="rate-value-text" id="val-eur-paralelo">Bs. 1.041,28</span>
+              <span class="rate-date-badge" id="date-eur-paralelo" style="display:none;">01/11/2026 - 02:01 PM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: RESUMEN "MI COMPRA" (3 Columnas) -->
+        <div class="card summary-card">
+          <div class="summary-header">
+            <div class="summary-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d2c55" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="20" r="1.5" fill="#0d2c55"></circle>
+                <circle cx="18" cy="20" r="1.5" fill="#0d2c55"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                <line x1="10" y1="6" x2="10" y2="15"></line>
+                <line x1="14" y1="6" x2="14" y2="15"></line>
+                <line x1="18" y1="6" x2="18" y2="15"></line>
+                <line x1="6" y1="10" x2="22" y2="10"></line>
+              </svg>
+              <span>Mi Compra</span>
+            </div>
+            <span class="status-tag">En Curso</span>
+          </div>
+
+          <div class="summary-columns-grid">
+            <!-- Dólares -->
+            <div class="summary-col">
+              <div class="col-icon-circle usd">$</div>
+              <div class="col-amount usd" id="top-total-usd">$ 8,31</div>
+              <div class="col-label">Dólares</div>
+            </div>
+
+            <!-- Bolívares (Destacado en el centro) -->
+            <div class="summary-col">
+              <div class="col-icon-circle bs">Bs.</div>
+              <div class="col-amount bs" id="top-total-bs">Bs. 7.389,75</div>
+              <div class="col-label">Bolívares</div>
+            </div>
+
+            <!-- Euros -->
+            <div class="summary-col">
+              <div class="col-icon-circle eur">€</div>
+              <div class="col-amount eur" id="top-total-eur">€ 8,17</div>
+              <div class="col-label">Euros</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: AGREGAR PRODUCTO -->
+        <div class="card add-product-card">
+          <div class="section-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+            <span>Agregar Producto</span>
+          </div>
+
+          <div class="form-grid">
+            <!-- Producto -->
+            <div class="form-group">
+              <label for="input-product-name">Producto</label>
+              <input type="text" id="input-product-name" class="form-control" placeholder="Ej. Arroz" list="product-suggestions" autocomplete="off">
+              <datalist id="product-suggestions">
+                <option value="Arroz">
+                <option value="Harina PAN">
+                <option value="Pasta">
+                <option value="Aceite">
+                <option value="Azúcar">
+                <option value="Café">
+                <option value="Leche">
+                <option value="Queso Blanco">
+                <option value="Huevos (Cartón)">
+                <option value="Pollo (Kg)">
+                <option value="Carne (Kg)">
+                <option value="Mantequilla">
+                <option value="Pan de Sandwich">
+                <option value="Detergente">
+              </datalist>
+            </div>
+
+            <!-- Cantidad con Stepper -->
+            <div class="form-group">
+              <label>Cantidad</label>
+              <div class="quantity-stepper">
+                <button type="button" class="stepper-btn" id="btn-qty-minus">−</button>
+                <input type="number" id="input-product-qty" class="stepper-input" value="1" min="1" step="1">
+                <button type="button" class="stepper-btn" id="btn-qty-plus">+</button>
+              </div>
+            </div>
+
+            <!-- Precio -->
+            <div class="form-group">
+              <label for="input-product-price">Precio</label>
+              <input type="text" inputmode="decimal" id="input-product-price" class="form-control" placeholder="0.00">
+            </div>
+
+            <!-- Moneda con bandera real y código -->
+            <div class="form-group">
+              <label for="currency-display-btn">Moneda</label>
+              <div class="currency-custom-select" id="custom-currency-picker">
+                <div class="currency-selected-box" id="currency-display-btn" role="button" tabindex="0" aria-label="Seleccionar moneda">
+                  <div class="currency-display-left">
+                    <img id="currency-active-flag" class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                    <span id="currency-active-code" class="currency-code-text">USD</span>
+                  </div>
+                  <svg class="currency-chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+
+                <!-- Menú desplegable con banderas reales -->
+                <div class="currency-dropdown-options" id="currency-options-menu">
+                  <div class="currency-option active" data-value="USD">
+                    <img class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                    <span class="currency-option-label">USD ($)</span>
+                  </div>
+                  <div class="currency-option" data-value="VES">
+                    <img class="currency-flag-icon" src="icons/flag-ve.svg" alt="VES">
+                    <span class="currency-option-label">Bs. (Bolívares)</span>
+                  </div>
+                  <div class="currency-option" data-value="EUR">
+                    <img class="currency-flag-icon" src="icons/flag-eu.svg" alt="EUR">
+                    <span class="currency-option-label">EUR (€)</span>
+                  </div>
+                </div>
+
+                <!-- Select nativo para compatibilidad 100% -->
+                <select id="select-product-currency" class="native-hidden-select" tabindex="-1" aria-hidden="true">
+                  <option value="USD" selected>USD</option>
+                  <option value="VES">VES</option>
+                  <option value="EUR">EUR</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Agregar -->
+          <button type="button" class="btn-primary-action" id="btn-add-product">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span>Agregar al Ticket</span>
+          </button>
+        </div>
+
+        <!-- CARD 4: DETALLE DE LA COMPRA (Ticket) -->
+        <div class="card ticket-card">
+          <div class="ticket-header">
+            <div class="section-title" style="margin-bottom:0;">
+              <span>Detalle de la Compra</span>
+            </div>
+            <span class="ticket-count-badge" id="ticket-count-badge">2 productos</span>
+          </div>
+
+          <!-- Lista de productos añadidos -->
+          <div class="ticket-items-list" id="ticket-items-list">
+            <!-- Se llena dinámicamente con app.js -->
+          </div>
+
+          <!-- BANNER AZUL OSCURO DE TOTALES (Como en el mockup) -->
+          <div class="totals-dark-banner">
+            <div class="totals-top-meta">
+              <span>Total Productos: <strong id="total-products-meta">7</strong></span>
+              <span>Tasa: <strong id="rate-used-meta">889,26 Bs/$</strong></span>
+            </div>
+
+            <div class="totals-row">
+              <span>Total en USD:</span>
+              <span id="dark-total-usd">$8,31</span>
+            </div>
+
+            <div class="totals-row">
+              <span>Total en EUR:</span>
+              <span id="dark-total-eur">€8,17</span>
+            </div>
+
+            <div class="totals-row bs-row">
+              <span>Total en Bs:</span>
+              <span class="total-bs-val" id="dark-total-bs">Bs. 7.389,75</span>
+            </div>
+          </div>
+
+          <!-- Acciones del Ticket -->
+          <div class="ticket-actions-group">
+            <button type="button" class="btn-clear" id="btn-clear-ticket">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              <span>Limpiar</span>
+            </button>
+
+            <button type="button" class="btn-checkout" id="btn-checkout-ticket">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+              </svg>
+              <span>Finalizar Compra</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- PESTAÑA 2: HISTORIAL -->
+      <section id="tab-historial" class="tab-pane">
+        <div class="history-sticky-header">
+          <div class="section-title" style="justify-content:space-between; margin-bottom:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span>🕒 Historial de Compras</span>
+            </div>
+            <button class="btn-clear" id="btn-clear-history" style="padding:4px 10px; font-size:0.75rem;">Vaciar Todo</button>
+          </div>
+
+          <!-- Filtros de Categoría, Periodo y Calendario estilo Píldoras -->
+          <div class="history-filters-scroll" id="history-filters-container">
+            <!-- Se llena dinámicamente con las píldoras de filtro -->
+          </div>
+        </div>
+
+        <div id="empty-history" class="empty-ticket-state">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p id="empty-history-text">No tienes compras finalizadas guardadas</p>
+        </div>
+
+        <div id="history-list"></div>
+      </section>
+
+      <!-- PESTAÑA 3: ESTADÍSTICAS -->
+      <section id="tab-estadisticas" class="tab-pane">
+        <!-- Tarjeta Principal Hero: Gasto Total Acumulado -->
+        <div class="stats-hero-banner">
+          <div class="stats-hero-top">
+            <span class="stats-hero-label">GASTO TOTAL ACUMULADO</span>
+            <!-- Botón rojo eliminado según lo solicitado -->
+          </div>
+
+          <!-- Monto Principal en Bolívares (primera moneda destacada) -->
+          <div class="stats-hero-primary-box">
+            <span class="stats-hero-main-amount" id="stat-total-spent-bs">Bs. 0,00</span>
+            <span class="stats-hero-main-currency">VES</span>
+          </div>
+
+          <!-- Montos Secundarios: Debajo en Dólares y Euros -->
+          <div class="stats-hero-subgrid">
+            <div class="stats-hero-subcol">
+              <div class="stats-subcol-header">
+                <span class="stats-subcol-badge usd">$</span>
+                <span class="stats-subcol-lbl">Dólares (USD)</span>
+              </div>
+              <div class="stats-subcol-amount" id="stat-total-spent-usd">$ 0,00</div>
+            </div>
+
+            <div class="stats-hero-subcol">
+              <div class="stats-subcol-header">
+                <span class="stats-subcol-badge eur">€</span>
+                <span class="stats-subcol-lbl">Euros (EUR)</span>
+              </div>
+              <div class="stats-subcol-amount" id="stat-total-spent-eur">€ 0,00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjetas Secundarias: Resumen Complementario -->
+        <div class="stats-summary-grid">
+          <div class="stats-mini-card">
+            <div class="stats-mini-icon-circle blue">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="stats-mini-label">Compras Realizadas</span>
+              <div class="stats-mini-value" id="stat-total-purchases">0</div>
+            </div>
+          </div>
+
+          <div class="stats-mini-card">
+            <div class="stats-mini-icon-circle green">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="stats-mini-label">Ticket Promedio</span>
+              <div class="stats-mini-value" id="stat-average-ticket">$ 0,00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selector Segmentado: Por Comercio vs Por Categoría -->
+        <div class="stats-segmented-control">
+          <button type="button" class="stats-seg-btn" id="btn-stats-by-store" onclick="setStatsViewMode('store')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Por Comercio</span>
+          </button>
+          <button type="button" class="stats-seg-btn active" id="btn-stats-by-category" onclick="setStatsViewMode('category')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span>Por Categoría</span>
+          </button>
+        </div>
+
+        <!-- Tarjeta Principal de Distribución (Gráfico Dona + Barra + Tarjetas de Auditoría) -->
+        <div class="stats-distribution-card">
+          <div class="stats-dist-header">
+            <h3 class="stats-dist-title" id="stats-dist-title">Distribución por Rubro</h3>
+            <span class="stats-dist-badge" id="stats-dist-count">4 Categorías</span>
+          </div>
+
+          <!-- Contenedor del Gráfico de Dona -->
+          <div class="stats-donut-wrapper">
+            <div class="stats-donut-chart" id="stats-donut-chart">
+              <div class="donut-center-info">
+                <span class="donut-sub">Mayor Peso</span>
+                <span class="donut-pct" id="donut-top-pct">0%</span>
+                <span class="donut-label" id="donut-top-label">Sin datos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barra de Progreso Segmentada Multicolor -->
+          <div class="stats-segmented-bar" id="stats-segmented-bar">
+            <!-- Segmentos dinámicos -->
+          </div>
+
+          <p class="stats-audit-hint" id="stats-audit-hint">Toca cualquier categoría para auditar compras</p>
+
+          <!-- Lista de Tarjetas de Categoría / Comercio -->
+          <div class="stats-cards-list" id="stats-cards-list">
+            <!-- Se llena dinámicamente con las tarjetas de categoría o comercio -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PESTAÑA 4: CONFIGURACIÓN (GESTIÓN DE TASAS) -->
+      <section id="tab-configuracion" class="tab-pane">
+        <!-- Header con cápsula verde y badge Multimoneda -->
+        <div class="rates-mgmt-header">
+          <div class="rates-mgmt-title-group">
+            <span class="rates-mgmt-pill-marker"></span>
+            <h2 class="rates-mgmt-title">GESTIÓN DE TASAS</h2>
+          </div>
+          <span class="rates-mgmt-badge-multi">Multimoneda</span>
+        </div>
+
+        <!-- Tarjeta Principal de Configuración de Tasas -->
+        <div class="rates-mgmt-card">
+          <!-- Sección: Fuente de Cambio Principal -->
+          <div class="rates-mgmt-section-label">Fuente de Cambio Principal</div>
+          
+          <div class="rate-source-options-list">
+            <!-- Opción 1: BCV Oficial -->
+            <div class="rate-source-item active" id="source-item-bcv" onclick="selectRateSource('bcv')">
+              <div class="rate-source-icon-wrap icon-bcv">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+              </div>
+              <div class="rate-source-info">
+                <div class="rate-source-title-row">
+                  <span class="rate-source-name">BCV Oficial</span>
+                  <span class="badge-legal-shield">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    Legal
+                  </span>
+                </div>
+                <div class="rate-source-desc">Tipo de cambio regulado para comercios</div>
+              </div>
+              <div class="rate-source-radio-check" id="radio-bcv">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Opción 2: EnParaleloVzla -->
+            <div class="rate-source-item" id="source-item-paralelo" onclick="selectRateSource('paralelo')">
+              <div class="rate-source-icon-wrap icon-paralelo">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+              <div class="rate-source-info">
+                <div class="rate-source-title-row">
+                  <span class="rate-source-name">EnParaleloVzla</span>
+                </div>
+                <div class="rate-source-desc">Promedio informativo de mercado</div>
+              </div>
+              <div class="rate-source-radio-check inactive" id="radio-paralelo">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Opción 3: Tasa Propia / Local -->
+            <div class="rate-source-item" id="source-item-custom" onclick="selectRateSource('custom')">
+              <div class="rate-source-icon-wrap icon-custom">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+              </div>
+              <div class="rate-source-info">
+                <div class="rate-source-title-row">
+                  <span class="rate-source-name">Tasa Propia / Local</span>
+                </div>
+                <div class="rate-source-desc">Fijada según tu comercio o abasto habitual</div>
+              </div>
+              <div class="rate-source-radio-check inactive" id="radio-custom">
+                <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-tarjeta: Actualización Automática -->
+          <div class="rates-sync-subcard">
+            <div class="rates-sync-top-row">
+              <div class="rates-sync-icon-and-text">
+                <div class="rates-sync-icon-circle">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="rates-sync-title">Actualización automática</div>
+                  <div class="rates-sync-desc">Descarga el valor oficial sin abrir el navegador</div>
+                </div>
+              </div>
+              <label class="modern-toggle-switch">
+                <input type="checkbox" id="toggle-auto-sync" checked onchange="toggleAutoSyncSetting(this.checked)">
+                <span class="modern-toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="rates-sync-freq-section">
+              <span class="rates-sync-freq-label">Frecuencia de sincronización</span>
+              <div class="rates-sync-freq-pills">
+                <button type="button" class="freq-pill-btn" id="freq-pill-1h" onclick="setSyncFrequency('1h')">Cada hora</button>
+                <button type="button" class="freq-pill-btn active" id="freq-pill-2d" onclick="setSyncFrequency('2d')">2 veces/día</button>
+                <button type="button" class="freq-pill-btn" id="freq-pill-open" onclick="setSyncFrequency('open')">Al abrir app</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección: Valores Activos para Cálculo -->
+          <div class="rates-active-calc-header">
+            <span class="rates-active-calc-title">Valores Activos para Cálculo</span>
+            <button type="button" class="btn-sync-now-link" id="btn-sync-rates-config" onclick="syncRatesFromConfig()">
+              <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>Sincronizar ahora</span>
+            </button>
+          </div>
+
+          <!-- Fila USD -->
+          <div class="rate-display-block">
+            <div class="rate-display-meta-top">
+              <span class="rate-display-curr-name">Dólar Estadounidense (USD)</span>
+              <span class="rate-display-source-tag" id="config-usd-source-tag">Oficial BCV</span>
+            </div>
+            <div class="rate-display-box" onclick="handleEditActiveRate('usd')">
+              <div class="rate-currency-pill usd-pill">
+                <span class="rate-pill-icon">$</span>
+                <span class="rate-pill-code">USD</span>
+              </div>
+              <div class="rate-display-number-group">
+                <span class="rate-curr-symbol">Bs.</span>
+                <span class="rate-amount-bold" id="config-active-usd">889,26</span>
+              </div>
+              <button type="button" class="btn-lock-rate-icon" title="Editar tasa">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Fila EUR -->
+          <div class="rate-display-block">
+            <div class="rate-display-meta-top">
+              <span class="rate-display-curr-name">Euro (EUR)</span>
+              <span class="rate-display-source-tag secondary" id="config-eur-source-tag">Cálculo cruzado</span>
+            </div>
+            <div class="rate-display-box" onclick="handleEditActiveRate('eur')">
+              <div class="rate-currency-pill eur-pill">
+                <span class="rate-pill-icon">€</span>
+                <span class="rate-pill-code">EUR</span>
+              </div>
+              <div class="rate-display-number-group">
+                <span class="rate-curr-symbol">Bs.</span>
+                <span class="rate-amount-bold" id="config-active-eur">903,12</span>
+              </div>
+              <button type="button" class="btn-lock-rate-icon" title="Editar tasa">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sub-tarjeta: Margen de amortiguación (Spread) -->
+          <div class="rates-spread-card">
+            <div class="rates-spread-text-col">
+              <div class="rates-spread-title-row">
+                <span class="rates-spread-title">Margen de amortiguación (Spread)</span>
+                <button type="button" class="rates-spread-info-btn" title="El margen amortigua las variaciones de centavos y redondeos en caja comercial">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="rates-spread-desc">Compensa variaciones de centavos en redondeos de caja</div>
+            </div>
+            <div class="rates-spread-stepper">
+              <button type="button" class="btn-spread-step" onclick="changeSpreadDelta(-0.5)" title="Reducir spread">−</button>
+              <span class="spread-value-pill" id="spread-value-display">+ 2,0 %</span>
+              <button type="button" class="btn-spread-step" onclick="changeSpreadDelta(0.5)" title="Aumentar spread">+</button>
+            </div>
+          </div>
+
+          <!-- Pie de estado / Fuente activa -->
+          <div class="rates-mgmt-footer-row">
+            <div class="rates-footer-live-badge">
+              <span class="live-dot-green"></span>
+              <span id="config-footer-time">Hoy, 09:40 AM</span>
+            </div>
+            <div class="rates-footer-source-name" id="config-footer-source">Fuente: Banco Central de Venezuela</div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Secundaria: Preferencias de Usuario -->
+        <div class="card" style="margin-top: 16px; margin-bottom: 24px;">
+          <div class="section-title">
+            <span>⚙️ Preferencias Generales</span>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="setting-currency-display-btn">Moneda predeterminada al agregar productos</label>
+            <div class="currency-custom-select" id="setting-custom-currency-picker">
+              <div class="currency-selected-box" id="setting-currency-display-btn" role="button" tabindex="0" aria-label="Seleccionar moneda predeterminada">
+                <div class="currency-display-left">
+                  <img id="setting-currency-active-flag" class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                  <span id="setting-currency-active-code" class="currency-code-text">USD</span>
+                </div>
+                <svg class="currency-chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </div>
+
+              <!-- Menú desplegable con banderas reales -->
+              <div class="currency-dropdown-options" id="setting-currency-options-menu">
+                <div class="currency-option active" data-value="USD">
+                  <img class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                  <span class="currency-option-label">USD ($) - Dólar</span>
+                </div>
+                <div class="currency-option" data-value="VES">
+                  <img class="currency-flag-icon" src="icons/flag-ve.svg" alt="VES">
+                  <span class="currency-option-label">Bs. (Bolívares)</span>
+                </div>
+                <div class="currency-option" data-value="EUR">
+                  <img class="currency-flag-icon" src="icons/flag-eu.svg" alt="EUR">
+                  <span class="currency-option-label">EUR (€) - Euro</span>
+                </div>
+              </div>
+
+              <!-- Select nativo para compatibilidad y sincronización -->
+              <select id="setting-default-currency" class="native-hidden-select" tabindex="-1" aria-hidden="true">
+                <option value="USD">USD</option>
+                <option value="VES">VES</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Botones de Acción (Imagen 2) -->
+          <div class="config-actions-group" style="margin-top: 18px; margin-bottom: 6px; display: flex; flex-direction: column; gap: 10px;">
+            <button type="button" class="btn-save-settings" id="btn-save-general-settings" onclick="saveGeneralSettings()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              <span>Guardar Cambios</span>
+            </button>
+
+            <button type="button" class="btn-reset-settings" id="btn-reset-general-settings" onclick="resetDefaultSettings()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <span>Restablecer Valores por Defecto</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Acerca de la Aplicación -->
+        <div class="card" style="margin-top: 16px; margin-bottom: 28px;">
+          <div class="section-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <span>ℹ️ Acerca de la Aplicación</span>
+            <span style="font-size: 0.72rem; font-weight: 700; background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 20px;">v1.0 Oficial</span>
+          </div>
+
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 12px;">
+            <p style="font-size: 0.86rem; color: #334155; line-height: 1.55; margin: 0;">
+              <strong>Mi Compra</strong> es una herramienta digital creada y desarrollada por <strong>Leondeiber Malvacía</strong>, concebida como una plataforma de <strong>uso libre y gratuito</strong> para todos los usuarios, familias y comercios de Venezuela.
+            </p>
+
+            <p style="font-size: 0.84rem; color: #64748b; line-height: 1.5; margin: 0;">
+              Diseñada para brindar precisión, agilidad y transparencia en el cálculo de compras con conversión multidivisa en tiempo real (BCV, Paralelo y Euro), funcionando de forma 100% privada y segura directamente en tu teléfono móvil.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 9px 10px; display: flex; align-items: center; gap: 7px;">
+                <span style="font-size: 1rem;">🆓</span>
+                <span style="font-size: 0.76rem; font-weight: 700; color: #1e293b;">Acceso Libre</span>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 9px 10px; display: flex; align-items: center; gap: 7px;">
+                <span style="font-size: 1rem;">🔒</span>
+                <span style="font-size: 0.76rem; font-weight: 700; color: #1e293b;">100% Privada</span>
+              </div>
+            </div>
+
+            <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 4px; text-align: center;">
+              <span style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
+                Creada y desarrollada con dedicación por <strong style="color: #0f172a;">Leondeiber Malvacía</strong> 🇻🇪
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BARRA DE NAVEGACIÓN INFERIOR (BOTTOM NAV) -->
+    <nav class="bottom-nav-bar">
+      <!-- 1. Inicio -->
+      <button class="nav-tab-item active" data-tab="tab-inicio">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        <span>Inicio</span>
+      </button>
+
+      <!-- 2. Historial -->
+      <button class="nav-tab-item" data-tab="tab-historial">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>Historial</span>
+      </button>
+
+      <!-- 3. Estadísticas -->
+      <button class="nav-tab-item" data-tab="tab-estadisticas">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        <span>Estadísticas</span>
+      </button>
+
+      <!-- 4. Configuración -->
+      <button class="nav-tab-item" data-tab="tab-configuracion">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Configuración</span>
+      </button>
+    </nav>
+
+    <!-- MODAL PARA EDITAR PRODUCTO / CANTIDAD -->
+    <div class="modal-overlay" id="modal-edit-product">
+      <div class="modal-box">
+        <h3 style="font-size:1.1rem; font-weight:800; color:var(--primary-navy); margin-bottom:12px;">
+          Editar Producto
+        </h3>
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label for="edit-product-name">Nombre del Producto</label>
+          <input type="text" id="edit-product-name" class="form-control" autocomplete="off">
+        </div>
+
+        <div class="form-grid" style="margin-bottom:10px;">
+          <div class="form-group">
+            <label>Cantidad</label>
+            <div class="quantity-stepper">
+              <button type="button" class="stepper-btn" id="edit-qty-minus">−</button>
+              <input type="number" id="edit-product-qty" class="stepper-input" value="1" min="1" step="1">
+              <button type="button" class="stepper-btn" id="edit-qty-plus">+</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-product-price">Precio</label>
+            <input type="text" inputmode="decimal" id="edit-product-price" class="form-control" placeholder="0.00">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="edit-currency-display-btn">Moneda</label>
+          <div class="currency-custom-select" id="edit-custom-currency-picker">
+            <div class="currency-selected-box" id="edit-currency-display-btn" role="button" tabindex="0" aria-label="Seleccionar moneda">
+              <div class="currency-display-left">
+                <img id="edit-currency-active-flag" class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                <span id="edit-currency-active-code" class="currency-code-text">USD</span>
+              </div>
+              <svg class="currency-chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+
+            <div class="currency-dropdown-options" id="edit-currency-options-menu">
+              <div class="currency-option active" data-value="USD">
+                <img class="currency-flag-icon" src="icons/flag-us.svg" alt="USD">
+                <span class="currency-option-label">USD ($)</span>
+              </div>
+              <div class="currency-option" data-value="VES">
+                <img class="currency-flag-icon" src="icons/flag-ve.svg" alt="VES">
+                <span class="currency-option-label">Bs. (Bolívares)</span>
+              </div>
+              <div class="currency-option" data-value="EUR">
+                <img class="currency-flag-icon" src="icons/flag-eu.svg" alt="EUR">
+                <span class="currency-option-label">EUR (€)</span>
+              </div>
+            </div>
+
+            <select id="edit-product-currency" class="native-hidden-select" tabindex="-1" aria-hidden="true">
+              <option value="USD" selected>USD</option>
+              <option value="VES">VES</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <button type="button" class="btn-clear" id="btn-cancel-edit-product">Cancelar</button>
+          <button type="button" class="btn-primary-action" id="btn-save-edit-product" style="padding:10px;">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL EDITAR TASA MANUAL / LOCAL (TASA PROPIA) -->
+    <div class="modal-overlay modal-bottom-sheet-overlay" id="modal-custom-rate">
+      <div class="modal-custom-rate-sheet">
+        <!-- Barra de arrastre superior -->
+        <div class="modal-drag-bar"></div>
+
+        <!-- Encabezado con Título, Badge y Botón Cerrar -->
+        <div class="custom-rate-header">
+          <div class="custom-rate-title-wrap">
+            <h3 class="custom-rate-title">Editar Tasa Manual</h3>
+            <span class="badge-custom-pill">Personalizada</span>
+          </div>
+          <button type="button" class="btn-close-modal-round" id="btn-close-custom-rate" onclick="closeCustomRateModal()" title="Cerrar">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Sección: Moneda a Configurar -->
+        <div class="custom-rate-section">
+          <label class="custom-rate-section-label">MONEDA A CONFIGURAR</label>
+          <div class="custom-rate-currency-selector">
+            <button type="button" class="custom-currency-tab-btn active" id="tab-curr-usd" onclick="setCustomRateCurrency('USD')">
+              <span class="custom-curr-icon usd">$</span>
+              <span>USD / Dólar</span>
+            </button>
+            <button type="button" class="custom-currency-tab-btn" id="tab-curr-eur" onclick="setCustomRateCurrency('EUR')">
+              <span class="custom-curr-icon eur">€</span>
+              <span>EUR / Euro</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sección: Tasa en Bolívares (VES) con Stepper -->
+        <div class="custom-rate-section">
+          <label class="custom-rate-section-label">TASA EN BOLÍVARES (VES)</label>
+          <div class="custom-rate-stepper-box">
+            <button type="button" class="btn-custom-rate-step" id="btn-custom-step-minus" onclick="stepCustomRate(-0.50)">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/>
+              </svg>
+            </button>
+            <div class="custom-rate-input-wrap">
+              <span class="custom-rate-prefix">Bs.</span>
+              <input type="text" inputmode="decimal" id="custom-rate-input" class="custom-rate-input-field" value="915,50">
+            </div>
+            <button type="button" class="btn-custom-rate-step" id="btn-custom-step-plus" onclick="stepCustomRate(0.50)">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sección: Ajustar margen sobre BCV -->
+        <div class="custom-margin-section">
+          <div class="custom-margin-top-row">
+            <span class="custom-margin-title">Ajustar margen sobre BCV:</span>
+            <span class="custom-margin-fixed-tag" id="custom-margin-fixed-display">+2,95% fijado</span>
+          </div>
+          <div class="custom-margin-pills-row">
+            <button type="button" class="margin-pill-btn" id="margin-pill-1" onclick="applyBcvMargin(1.0)">+1.0%</button>
+            <button type="button" class="margin-pill-btn" id="margin-pill-2" onclick="applyBcvMargin(2.0)">+2.0%</button>
+            <button type="button" class="margin-pill-btn active" id="margin-pill-current" onclick="applyBcvMargin(2.95)">+2.95%</button>
+            <button type="button" class="margin-pill-btn" id="margin-pill-5" onclick="applyBcvMargin(5.0)">+5.0%</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta de Referencia BCV y Diferencia Calculada -->
+        <div class="custom-ref-diff-card">
+          <div class="custom-ref-row">
+            <span class="custom-ref-label">Tasa Oficial BCV de Referencia:</span>
+            <strong class="custom-ref-value" id="custom-bcv-ref-val">Bs. 889,26</strong>
+          </div>
+          <div class="custom-ref-row">
+            <span class="custom-ref-label">Diferencia calculada:</span>
+            <span class="custom-diff-pill" id="custom-diff-badge">+Bs. 26,24 (+2,95%)</span>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Tasa activa predeterminada con Toggle -->
+        <div class="custom-default-switch-card">
+          <div class="custom-default-text">
+            <strong class="custom-default-title">Tasa activa predeterminada</strong>
+            <span class="custom-default-sub">Usar prioritariamente para cálculos en carrito</span>
+          </div>
+          <label class="modern-toggle-switch">
+            <input type="checkbox" id="toggle-custom-as-active" checked>
+            <span class="modern-toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Botón Guardar y Aplicar Tasa -->
+        <button type="button" class="btn-save-custom-rate" id="btn-save-apply-custom-rate" onclick="saveAndApplyCustomRate()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Guardar y Aplicar Tasa</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL TICKET / RECIBO DE COMPRA FINALIZADA -->
+    <div class="modal-overlay" id="modal-receipt">
+      <div class="receipt-wrapper">
+        <div class="receipt-paper">
+          <!-- Botón cerrar rápido en la esquina -->
+          <button type="button" class="receipt-close-btn" id="btn-receipt-dismiss" title="Cerrar ticket">✕</button>
+
+          <!-- Borde superior dentado decorativo -->
+          <div class="receipt-zigzag-teeth" aria-hidden="true"></div>
+
+          <div class="receipt-body">
+            <!-- Encabezado del Ticket -->
+            <div class="receipt-header">
+              <div class="receipt-brand">
+                <span class="receipt-brand-icon">🛒</span>
+                <span class="receipt-brand-name">MI COMPRA</span>
+              </div>
+              <p class="receipt-tagline" id="receipt-store-tagline">CALCULADORA DE COSTO</p>
+              
+              <div class="receipt-status-pill">
+                ✓ COMPRA FINALIZADA
+              </div>
+
+              <div class="receipt-meta-grid">
+                <div>
+                  <span class="receipt-meta-lbl">FECHA:</span>
+                  <strong id="receipt-date">01/11/2026 08:00 PM</strong>
+                </div>
+                <div style="text-align: right;">
+                  <span class="receipt-meta-lbl">TICKET:</span>
+                  <strong id="receipt-id">#1</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Separador punteado -->
+            <div class="receipt-divider"></div>
+
+            <!-- Tabla de artículos -->
+            <div class="receipt-items-container">
+              <div class="receipt-table-header">
+                <span>CANT / ARTÍCULO</span>
+                <span>SUBTOTAL (USD)</span>
+              </div>
+
+              <div class="receipt-items-list" id="receipt-items-list">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </div>
+
+            <!-- Separador punteado -->
+            <div class="receipt-divider"></div>
+
+            <!-- Resumen de totales -->
+            <div class="receipt-totals-section">
+              <div class="receipt-summary-line">
+                <span>Total Productos:</span>
+                <strong id="receipt-total-items">0</strong>
+              </div>
+              <div class="receipt-summary-line">
+                <span>Tasa Aplicada:</span>
+                <strong id="receipt-rate-used">889,26 Bs/$</strong>
+              </div>
+              <div class="receipt-summary-line">
+                <span>Total en USD:</span>
+                <strong id="receipt-total-usd">$ 0,00</strong>
+              </div>
+              <div class="receipt-summary-line">
+                <span>Total en EUR:</span>
+                <strong id="receipt-total-eur">€ 0,00</strong>
+              </div>
+
+              <!-- TOTAL EN BOLÍVARES DESTACADO -->
+              <div class="receipt-grand-total-box">
+                <div class="receipt-grand-label">TOTAL A PAGAR (BS)</div>
+                <div class="receipt-grand-amount" id="receipt-total-bs">Bs. 0,00</div>
+              </div>
+            </div>
+
+            <!-- Separador punteado -->
+            <div class="receipt-divider"></div>
+
+            <!-- Pie de Ticket con Código de Barras -->
+            <div class="receipt-footer">
+              <div class="receipt-barcode-box" aria-hidden="true">
+                <div class="receipt-barcode-lines"></div>
+                <span class="receipt-barcode-num" id="receipt-barcode-num">7 591024 889260</span>
+              </div>
+              <p class="receipt-thanks-msg" id="receipt-footer-msg">CONTROL Y ESTIMACIÓN DE COSTOS</p>
+            </div>
+          </div>
+
+          <!-- Borde inferior dentado decorativo -->
+          <div class="receipt-zigzag-teeth" aria-hidden="true"></div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="receipt-actions-group">
+          <button type="button" class="btn-receipt-whatsapp" id="btn-receipt-share">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+            </svg>
+            <span>Compartir</span>
+          </button>
+
+          <button type="button" class="btn-receipt-history" id="btn-receipt-view-history">
+            <span>Ver Historial</span>
+          </button>
+
+          <button type="button" class="btn-receipt-save" id="btn-receipt-save">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+            </svg>
+            <span>Guardar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL PARA REGISTRAR NOMBRE Y TIPO DE TIENDA ANTES DE GUARDAR EN HISTORIAL -->
+    <div class="modal-overlay" id="modal-store-info">
+      <div class="modal-box">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            🏪 Datos de la Tienda
+          </h3>
+          <span id="store-ticket-badge" style="background:#eff6ff; color:#2563eb; font-size:0.75rem; font-weight:800; padding:3px 9px; border-radius:6px; border:1px solid #bfdbfe;">
+            Ticket #1
+          </span>
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.35;">
+          Indica el nombre y tipo de comercio para archivar tu ticket en el Historial:
+        </p>
+
+        <!-- Nombre de la Tienda -->
+        <div class="form-group" style="margin-bottom:12px;">
+          <label for="input-store-name">Nombre de la Tienda</label>
+          <input type="text" id="input-store-name" class="form-control" placeholder="Ej. Central Madeirense, Farmatodo, EPA..." list="store-suggestions" autocomplete="off">
+          <datalist id="store-suggestions">
+            <option value="Central Madeirense">
+            <option value="Excelsior Gama">
+            <option value="Plazas">
+            <option value="Automercados Luz">
+            <option value="Farmatodo">
+            <option value="Farmahorro">
+            <option value="Locatel">
+            <option value="EPA">
+            <option value="Ferretería">
+            <option value="Panadería">
+            <option value="Carnicería">
+            <option value="Bodega / Abasto">
+            <option value="Traki">
+          </datalist>
+        </div>
+
+        <!-- Tipo de Tienda / Rubro -->
+        <div class="form-group" style="margin-bottom:18px;">
+          <label for="select-store-type">Tipo de Tienda / Rubro</label>
+          <select id="select-store-type" class="form-control" style="font-weight:700;">
+            <option value="Alimentos y Despensa" selected>🛒 Alimentos y Despensa</option>
+            <option value="Medicinas & Cuidado">💊 Medicinas & Cuidado</option>
+            <option value="Carnes y Proteínas">🥩 Carnes y Proteínas</option>
+            <option value="Limpieza y Hogar">🧹 Limpieza y Hogar</option>
+            <option value="Panadería">🥖 Panadería</option>
+            <option value="Ferretería">🔨 Ferretería</option>
+            <option value="Tienda / Abasto">🏪 Tienda / Abasto</option>
+            <option value="Otro">🛍️ Otro</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1.3fr; gap:10px;">
+          <button type="button" class="btn-clear" id="btn-cancel-store-info">Cancelar</button>
+          <button type="button" class="btn-primary-action" id="btn-confirm-save-ticket" style="padding:10px;">
+            Guardar en Historial
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE AUDITORÍA DE COMPRAS (AL TOCAR CATEGORÍA O COMERCIO) -->
+    <div id="modal-audit-category" class="modal-overlay">
+      <div class="modal-box modal-audit-card">
+        <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div id="modal-audit-icon-box" class="audit-icon-box"></div>
+            <div>
+              <h3 id="modal-audit-title" style="margin:0; font-size:1.05rem; font-weight:800; color:#0f172a;">Auditoría de Compras</h3>
+              <span id="modal-audit-subtitle" style="font-size:0.75rem; color:#64748b; font-weight:600;">Detalle de gastos</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close-modal" id="btn-close-audit-modal" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#64748b; padding:4px;">✕</button>
+        </div>
+
+        <div class="modal-body" style="max-height:55vh; overflow-y:auto; padding:2px 0;">
+          <!-- Resumen de Auditoría -->
+          <div class="audit-summary-pill" id="modal-audit-summary-pill">
+            <!-- Total en USD, Bs. y número de tickets -->
+          </div>
+
+          <!-- Lista de Tickets Auditados -->
+          <div id="modal-audit-tickets-list" style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+            <!-- Tickets de esa categoría / comercio -->
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding-top:12px; margin-top:12px; border-top:1px solid #f1f5f9; display:grid; grid-template-columns:1fr 1.3fr; gap:10px;">
+          <button type="button" class="btn-clear" id="btn-close-audit-modal-footer">Cerrar</button>
+          <button type="button" class="btn-primary-action" id="btn-filter-history-from-audit" style="padding:10px;">
+            Ver en Historial ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN ELEGANTE (REEMPLAZO DE CONFIRM NATIVO) -->
+    <div class="modal-overlay" id="modal-app-confirm">
+      <div class="modal-box modal-confirm-card">
+        <div class="confirm-modal-icon-wrap">
+          <div class="confirm-modal-icon danger" id="confirm-modal-icon">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          </div>
+        </div>
+
+        <h3 class="confirm-modal-title" id="confirm-modal-title">¿Eliminar elemento?</h3>
+        <p class="confirm-modal-message" id="confirm-modal-message">¿Estás seguro de realizar esta acción?</p>
+
+        <div class="confirm-modal-actions">
+          <button type="button" class="btn-confirm-cancel" id="btn-confirm-cancel">Cancelar</button>
+          <button type="button" class="btn-confirm-accept is-danger" id="btn-confirm-accept">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICACIÓN FLOTANTE (TOAST) -->
+    <div class="toast" id="app-toast">
+      <span>✓</span>
+      <span>Mensaje</span>
+    </div>
+
+    <!-- BANNER DE ACTUALIZACIÓN DISPONIBLE (PWA / GITHUB PAGES) -->
+    <div class="pwa-update-bar" id="pwa-update-bar" style="display: none;">
+      <div class="pwa-update-content">
+        <span class="pwa-update-icon">✨</span>
+        <span class="pwa-update-text">Nueva versión disponible</span>
+      </div>
+      <button type="button" class="btn-pwa-reload" id="btn-pwa-reload">Actualizar</button>
+    </div>
+
+  </div>
+
+  <!-- Scripts modulares -->
+  <script src="js/api.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Service Worker para soporte Offline y Auto-Actualización PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          // Detectar si hay una actualización esperando ser activada
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showUpdateBar(newWorker);
+                }
+              });
+            }
+          });
+        }).catch(err => {
+          console.log('SW registration failed:', err);
+        });
+
+        // Recargar automáticamente cuando el nuevo Service Worker toma el control
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+          }
+        });
+      });
+    }
+
+    function showUpdateBar(worker) {
+      const bar = document.getElementById('pwa-update-bar');
+      const btn = document.getElementById('btn-pwa-reload');
+      if (bar && btn) {
+        bar.style.display = 'flex';
+        btn.onclick = () => {
+          btn.textContent = 'Actualizando...';
+          worker.postMessage({ action: 'SKIP_WAITING' });
+        };
+      }
+    }
+  </script>
+</body>
+</html>

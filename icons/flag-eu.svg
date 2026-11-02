@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <defs>
+    <clipPath id="eu-clip">
+      <rect width="24" height="16" rx="2.5"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#eu-clip)">
+    <rect width="24" height="16" fill="#003399"/>
+    <!-- Círculo de 12 estrellas doradas -->
+    <g fill="#FFCC00" transform="translate(12, 8)">
+      <circle cx="0" cy="-4.8" r="0.55"/>
+      <circle cx="2.4" cy="-4.1" r="0.55"/>
+      <circle cx="4.1" cy="-2.4" r="0.55"/>
+      <circle cx="4.8" cy="0" r="0.55"/>
+      <circle cx="4.1" cy="2.4" r="0.55"/>
+      <circle cx="2.4" cy="4.1" r="0.55"/>
+      <circle cx="0" cy="4.8" r="0.55"/>
+      <circle cx="-2.4" cy="4.1" r="0.55"/>
+      <circle cx="-4.1" cy="2.4" r="0.55"/>
+      <circle cx="-4.8" cy="0" r="0.55"/>
+      <circle cx="-4.1" cy="-2.4" r="0.55"/>
+      <circle cx="-2.4" cy="-4.1" r="0.55"/>
+    </g>
+  </g>
+  <rect width="24" height="16" rx="2.5" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="0.8"/>
+</svg>

@@ -1,0 +1,67 @@
+<svg viewBox="0 0 160 75" width="160" height="75" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Sombra suave para dar volumen 3D al lazo -->
+    <filter id="ribbonShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="-2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Gradiente Amarillo Bandera con Brillo -->
+    <linearGradient id="yellowRibbon" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E5A800"/>
+      <stop offset="40%" stop-color="#FFD100"/>
+      <stop offset="70%" stop-color="#FFE033"/>
+      <stop offset="100%" stop-color="#FFCC00"/>
+    </linearGradient>
+
+    <!-- Gradiente Azul Bandera Profundo -->
+    <linearGradient id="blueRibbon" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00247D"/>
+      <stop offset="50%" stop-color="#0038A8"/>
+      <stop offset="100%" stop-color="#004AD7"/>
+    </linearGradient>
+
+    <!-- Gradiente Rojo Bandera -->
+    <linearGradient id="redRibbon" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9E0B1C"/>
+      <stop offset="50%" stop-color="#CF142B"/>
+      <stop offset="100%" stop-color="#EA1D36"/>
+    </linearGradient>
+
+    <!-- Brillo satinado curvo -->
+    <linearGradient id="sheenWave" x1="0.2" y1="0.8" x2="0.8" y2="0.2">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.32"/>
+      <stop offset="65%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+
+    <!-- Estrella de 5 puntas estándar venezolana -->
+    <g id="star-5">
+      <polygon points="0,-2.3 0.68,-0.75 2.3,-0.75 0.98,0.22 1.48,1.75 0,0.82 -1.48,1.75 -0.98,0.22 -2.3,-0.75 -0.68,-0.75" fill="#FFFFFF"/>
+    </g>
+  </defs>
+
+  <g filter="url(#ribbonShadow)">
+    <!-- Franja Amarilla (Superior) -->
+    <path d="M 12 75 C 36 46, 68 14, 116 14 C 134 14, 148 18, 160 22 L 160 33 C 148 29, 134 25, 116 25 C 72 25, 42 52, 23 75 Z" fill="url(#yellowRibbon)"/>
+    <path d="M 12 75 C 36 46, 68 14, 116 14 C 134 14, 148 18, 160 22 L 160 33 C 148 29, 134 25, 116 25 C 72 25, 42 52, 23 75 Z" fill="url(#sheenWave)"/>
+
+    <!-- Franja Azul (Media) -->
+    <path d="M 23 75 C 42 52, 72 25, 116 25 C 134 25, 148 29, 160 33 L 160 45 C 147 41, 133 37, 116 37 C 76 37, 49 57, 34 75 Z" fill="url(#blueRibbon)"/>
+    <path d="M 23 75 C 42 52, 72 25, 116 25 C 134 25, 148 29, 160 33 L 160 45 C 147 41, 133 37, 116 37 C 76 37, 49 57, 34 75 Z" fill="url(#sheenWave)"/>
+
+    <!-- 8 Estrellas Blancas en Arco en la Franja Azul -->
+    <use href="#star-5" x="48" y="58" transform="rotate(-30, 48, 58)"/>
+    <use href="#star-5" x="61" y="49" transform="rotate(-23, 61, 49)"/>
+    <use href="#star-5" x="75" y="42" transform="rotate(-15, 75, 42)"/>
+    <use href="#star-5" x="90" y="37" transform="rotate(-7, 90, 37)"/>
+    <use href="#star-5" x="105" y="34" transform="rotate(0, 105, 34)"/>
+    <use href="#star-5" x="120" y="33" transform="rotate(7, 120, 33)"/>
+    <use href="#star-5" x="135" y="34" transform="rotate(15, 135, 34)"/>
+    <use href="#star-5" x="149" y="38" transform="rotate(22, 149, 38)"/>
+
+    <!-- Franja Roja (Inferior) -->
+    <path d="M 34 75 C 49 57, 76 37, 116 37 C 133 37, 147 41, 160 45 L 160 57 C 146 53, 132 49, 116 49 C 80 49, 56 62, 46 75 Z" fill="url(#redRibbon)"/>
+    <path d="M 34 75 C 49 57, 76 37, 116 37 C 133 37, 147 41, 160 45 L 160 57 C 146 53, 132 49, 116 49 C 80 49, 56 62, 46 75 Z" fill="url(#sheenWave)"/>
+  </g>
+</svg>

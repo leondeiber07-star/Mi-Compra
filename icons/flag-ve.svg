@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <defs>
+    <clipPath id="ve-clip">
+      <rect width="24" height="16" rx="2.5"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#ve-clip)">
+    <!-- 3 franjas Amarillo, Azul y Rojo -->
+    <rect width="24" height="5.33" fill="#FCD116"/>
+    <rect y="5.33" width="24" height="5.34" fill="#0038A8"/>
+    <rect y="10.67" width="24" height="5.33" fill="#CF142B"/>
+    <!-- 8 estrellas blancas en arco -->
+    <g fill="#FFFFFF">
+      <circle cx="6.8" cy="8.6" r="0.48"/>
+      <circle cx="8.2" cy="7.8" r="0.48"/>
+      <circle cx="9.8" cy="7.2" r="0.48"/>
+      <circle cx="11.4" cy="6.9" r="0.48"/>
+      <circle cx="12.6" cy="6.9" r="0.48"/>
+      <circle cx="14.2" cy="7.2" r="0.48"/>
+      <circle cx="15.8" cy="7.8" r="0.48"/>
+      <circle cx="17.2" cy="8.6" r="0.48"/>
+    </g>
+  </g>
+  <rect width="24" height="16" rx="2.5" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="0.8"/>
+</svg>

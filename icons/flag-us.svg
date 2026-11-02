@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <defs>
+    <clipPath id="us-clip">
+      <rect width="24" height="16" rx="2.5"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#us-clip)">
+    <!-- 13 franjas rojas y blancas -->
+    <rect width="24" height="16" fill="#B22234"/>
+    <rect y="1.23" width="24" height="1.23" fill="#FFFFFF"/>
+    <rect y="3.69" width="24" height="1.23" fill="#FFFFFF"/>
+    <rect y="6.15" width="24" height="1.23" fill="#FFFFFF"/>
+    <rect y="8.61" width="24" height="1.23" fill="#FFFFFF"/>
+    <rect y="11.07" width="24" height="1.23" fill="#FFFFFF"/>
+    <rect y="13.53" width="24" height="1.23" fill="#FFFFFF"/>
+    <!-- Cantón azul -->
+    <rect width="10.5" height="8.61" fill="#3C3B6E"/>
+    <!-- Estrellas -->
+    <g fill="#FFFFFF" transform="scale(0.85) translate(0.4, 0.4)">
+      <circle cx="2" cy="1.6" r="0.55"/>
+      <circle cx="5" cy="1.6" r="0.55"/>
+      <circle cx="8" cy="1.6" r="0.55"/>
+      <circle cx="11" cy="1.6" r="0.55"/>
+      <circle cx="3.5" cy="3.3" r="0.55"/>
+      <circle cx="6.5" cy="3.3" r="0.55"/>
+      <circle cx="9.5" cy="3.3" r="0.55"/>
+      <circle cx="2" cy="5.0" r="0.55"/>
+      <circle cx="5" cy="5.0" r="0.55"/>
+      <circle cx="8" cy="5.0" r="0.55"/>
+      <circle cx="11" cy="5.0" r="0.55"/>
+      <circle cx="3.5" cy="6.7" r="0.55"/>
+      <circle cx="6.5" cy="6.7" r="0.55"/>
+      <circle cx="9.5" cy="6.7" r="0.55"/>
+      <circle cx="2" cy="8.4" r="0.55"/>
+      <circle cx="5" cy="8.4" r="0.55"/>
+      <circle cx="8" cy="8.4" r="0.55"/>
+      <circle cx="11" cy="8.4" r="0.55"/>
+    </g>
+  </g>
+  <rect width="24" height="16" rx="2.5" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="0.8"/>
+</svg>
