@@ -18,9 +18,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Estilos de la aplicación -->
-  <link rel="stylesheet" href="css/styles.css?v=21">
+  <link rel="stylesheet" href="css/styles.css?v=23">
 </head>
 <body>
+
+  <!-- PANTALLA DE BIENVENIDA / SPLASH SCREEN ANIMADO -->
+  <div id="app-splash-screen" class="app-splash-screen" aria-label="Mi Compra">
+    <div class="splash-ambient-glow"></div>
+    <div class="splash-content">
+      <div class="splash-logo-wrapper">
+        <div class="splash-pulse-ring"></div>
+        <img src="icons/icon-512.svg" alt="Mi Compra Logo" class="splash-logo-img">
+      </div>
+      <div class="splash-brand-group">
+        <h1 class="splash-title">Mi Compra</h1>
+        <p class="splash-subtitle">Calculadora de Compras</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Contenedor del dispositivo móvil -->
   <div class="device-container">
@@ -888,6 +903,12 @@
               <span style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
                 Creada y desarrollada con dedicación por <strong style="color: #0f172a;">Leondeiber Malvacía</strong> 🇻🇪
               </span>
+              <button type="button" class="btn-clear" id="btn-manual-check-update" style="font-size: 0.78rem; font-weight: 700; padding: 8px 12px; margin-top: 10px; border-radius: 10px; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 7px; background: #f8fafc; border: 1px solid #cbd5e1; color: #334155; cursor: pointer;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>Buscar Actualizaciones</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1332,28 +1353,49 @@
     </div>
 
     <!-- BANNER DE ACTUALIZACIÓN DISPONIBLE (PWA / GITHUB PAGES) -->
-    <div class="pwa-update-bar" id="pwa-update-bar" style="display: none;">
+    <div class="pwa-update-bar" id="pwa-update-bar" style="display: none;" role="alert" aria-live="assertive">
       <div class="pwa-update-content">
-        <span class="pwa-update-icon">✨</span>
-        <span class="pwa-update-text">Nueva versión disponible</span>
+        <div class="pwa-update-icon-wrapper">
+          <span class="pwa-update-icon">🚀</span>
+        </div>
+        <div class="pwa-update-text-group">
+          <strong class="pwa-update-title">¡Actualización disponible!</strong>
+          <span class="pwa-update-subtitle">Nueva versión lista en GitHub</span>
+        </div>
       </div>
-      <button type="button" class="btn-pwa-reload" id="btn-pwa-reload">Actualizar</button>
+      <div class="pwa-update-actions">
+        <button type="button" class="btn-pwa-reload" id="btn-pwa-reload">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>Actualizar</span>
+        </button>
+        <button type="button" class="btn-pwa-dismiss" id="btn-pwa-dismiss" title="Cerrar aviso" aria-label="Cerrar aviso">✕</button>
+      </div>
     </div>
 
   </div>
 
   <!-- Scripts modulares -->
-  <script src="js/api.js?v=21"></script>
-  <script src="js/calculator.js?v=21"></script>
-  <script src="js/storage.js?v=21"></script>
-  <script src="js/app.js?v=21"></script>
+  <script src="js/api.js?v=23"></script>
+  <script src="js/calculator.js?v=23"></script>
+  <script src="js/storage.js?v=23"></script>
+  <script src="js/app.js?v=23"></script>
 
   <!-- Service Worker para soporte Offline y Auto-Actualización PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').then(reg => {
-          // Detectar si hay una actualización esperando ser activada
+        // updateViaCache: 'none' garantiza consultar siempre GitHub Pages directamente
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+          window.swRegistration = reg;
+
+          // 1. Si ya hay una actualización descargada esperando activación
+          if (reg.waiting) {
+            showUpdateBar(reg.waiting);
+          }
+
+          // 2. Si se encuentra un nuevo Service Worker instalándose
           reg.addEventListener('updatefound', () => {
             const newWorker = reg.installing;
             if (newWorker) {
@@ -1364,11 +1406,24 @@
               });
             }
           });
+
+          // 3. Revisar en GitHub cada vez que el usuario abre o vuelve a la app
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+              reg.update().catch(() => {});
+            }
+          });
+
+          // 4. Revisión periódica en segundo plano cada 15 minutos mientras esté abierta
+          setInterval(() => {
+            reg.update().catch(() => {});
+          }, 15 * 60 * 1000);
+
         }).catch(err => {
-          console.log('SW registration failed:', err);
+          console.log('SW registration error:', err);
         });
 
-        // Recargar automáticamente cuando el nuevo Service Worker toma el control
+        // Recargar limpiamente cuando el nuevo worker toma el control
         let refreshing = false;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
           if (!refreshing) {
@@ -1382,14 +1437,52 @@
     function showUpdateBar(worker) {
       const bar = document.getElementById('pwa-update-bar');
       const btn = document.getElementById('btn-pwa-reload');
+      const dismissBtn = document.getElementById('btn-pwa-dismiss');
       if (bar && btn) {
         bar.style.display = 'flex';
         btn.onclick = () => {
-          btn.textContent = 'Actualizando...';
+          btn.innerHTML = '<span>Actualizando...</span>';
+          btn.style.opacity = '0.75';
+          btn.disabled = true;
           worker.postMessage({ action: 'SKIP_WAITING' });
         };
+        if (dismissBtn) {
+          dismissBtn.onclick = () => {
+            bar.style.display = 'none';
+          };
+        }
       }
     }
+
+    // Botón manual de búsqueda de actualizaciones en Ajustes
+    window.addEventListener('DOMContentLoaded', () => {
+      const btnManual = document.getElementById('btn-manual-check-update');
+      if (btnManual) {
+        btnManual.addEventListener('click', async () => {
+          btnManual.disabled = true;
+          const origHTML = btnManual.innerHTML;
+          btnManual.innerHTML = '<span>Consultando GitHub...</span>';
+          if (window.swRegistration) {
+            try {
+              await window.swRegistration.update();
+              if (window.swRegistration.waiting) {
+                showUpdateBar(window.swRegistration.waiting);
+              } else {
+                if (typeof showToast === 'function') {
+                  showToast('¡Tu app ya está en la versión más reciente!', '✓');
+                }
+              }
+            } catch (e) {
+              if (typeof showToast === 'function') {
+                showToast('No se pudo comprobar en este momento', '⚠️');
+              }
+            }
+          }
+          btnManual.disabled = false;
+          btnManual.innerHTML = origHTML;
+        });
+      }
+    });
   </script>
 </body>
 </html>
