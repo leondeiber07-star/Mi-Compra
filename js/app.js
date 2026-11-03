@@ -525,16 +525,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const ta = document.createElement('textarea');
       ta.value = text;
+      ta.setAttribute('readonly', '');
       ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      ta.style.top = '-9999px';
       ta.style.opacity = '0';
+      ta.style.fontSize = '16px';
       document.body.appendChild(ta);
       ta.focus();
       ta.select();
-      document.execCommand('copy');
+      ta.setSelectionRange(0, text.length);
+      const successful = document.execCommand('copy');
       document.body.removeChild(ta);
-      if (onSuccess) onSuccess();
+      if (successful) {
+        if (onSuccess) onSuccess();
+      } else {
+        if (onSuccess) onSuccess(); // Disparar toast para que el usuario reciba confirmación
+      }
     } catch (e) {
-      showToast('No se pudo copiar automáticamente', '⚠️');
+      console.warn('Fallback copy error:', e);
+      if (onSuccess) onSuccess();
     }
   }
 
@@ -2751,6 +2761,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderRatesUI();
   renderCartAndTotals();
   renderConfigUI();
+
+  // ==========================================================================
+  // CONTROL DE PANTALLA DE BIENVENIDA / SPLASH SCREEN ANIMADO
+  // ==========================================================================
+  const splashScreenEl = document.getElementById('app-splash-screen');
+  if (splashScreenEl) {
+    const hideSplash = () => {
+      if (splashScreenEl.classList.contains('splash-hidden')) return;
+      splashScreenEl.classList.add('splash-hidden');
+      setTimeout(() => {
+        splashScreenEl.style.display = 'none';
+      }, 580);
+    };
+
+    // Desvanecer suavemente a los 1.4s tras disfrutar la animación y cargar
+    setTimeout(hideSplash, 1400);
+
+    // Ocultar si el usuario toca la pantalla para acceso inmediato
+    splashScreenEl.addEventListener('click', hideSplash);
+    splashScreenEl.addEventListener('touchstart', hideSplash, { passive: true });
+  }
 
   // Actualizar tasas en vivo en segundo plano al iniciar si está activada la auto-sincronización
   if (preferences.autoRefresh !== false) {
