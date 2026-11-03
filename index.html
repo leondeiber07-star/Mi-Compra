@@ -18,7 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Estilos de la aplicación -->
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=21">
 </head>
 <body>
 
@@ -417,9 +417,9 @@
 
             <div class="totals-row bs-row">
               <span>Total en Bs:</span>
-              <div class="total-bs-wrapper">
+              <div class="total-bs-wrapper" style="display: inline-flex; align-items: center; gap: 8px;">
                 <span class="total-bs-val" id="dark-total-bs">Bs. 7.389,75</span>
-                <button type="button" class="btn-copy-total-bs" id="btn-copy-total-bs" title="Copiar monto en Bolívares" aria-label="Copiar monto en Bolívares">
+                <button type="button" class="btn-copy-total-bs" id="btn-copy-total-bs" title="Copiar monto en Bolívares" aria-label="Copiar monto en Bolívares" style="background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 8px; color: #ffffff; padding: 5px 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; outline: none; -webkit-appearance: none; appearance: none; box-shadow: none; line-height: 1; vertical-align: middle;">
                   <svg class="copy-icon-normal" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -1343,10 +1343,10 @@
   </div>
 
   <!-- Scripts modulares -->
-  <script src="js/api.js"></script>
-  <script src="js/calculator.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/api.js?v=21"></script>
+  <script src="js/calculator.js?v=21"></script>
+  <script src="js/storage.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
 
   <!-- Service Worker para soporte Offline y Auto-Actualización PWA -->
   <script>
