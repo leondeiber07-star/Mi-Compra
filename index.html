@@ -316,23 +316,7 @@
             <!-- Producto -->
             <div class="form-group">
               <label for="input-product-name">Producto</label>
-              <input type="text" id="input-product-name" class="form-control" placeholder="Ej. Arroz" list="product-suggestions" autocomplete="off">
-              <datalist id="product-suggestions">
-                <option value="Arroz">
-                <option value="Harina PAN">
-                <option value="Pasta">
-                <option value="Aceite">
-                <option value="Azúcar">
-                <option value="Café">
-                <option value="Leche">
-                <option value="Queso Blanco">
-                <option value="Huevos (Cartón)">
-                <option value="Pollo (Kg)">
-                <option value="Carne (Kg)">
-                <option value="Mantequilla">
-                <option value="Pan de Sandwich">
-                <option value="Detergente">
-              </datalist>
+              <input type="text" id="input-product-name" class="form-control" placeholder="Ej. Arroz" autocomplete="off">
             </div>
 
             <!-- Cantidad con Stepper -->
@@ -433,7 +417,18 @@
 
             <div class="totals-row bs-row">
               <span>Total en Bs:</span>
-              <span class="total-bs-val" id="dark-total-bs">Bs. 7.389,75</span>
+              <div class="total-bs-wrapper">
+                <span class="total-bs-val" id="dark-total-bs">Bs. 7.389,75</span>
+                <button type="button" class="btn-copy-total-bs" id="btn-copy-total-bs" title="Copiar monto en Bolívares" aria-label="Copiar monto en Bolívares">
+                  <svg class="copy-icon-normal" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <svg class="copy-icon-success" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -782,7 +777,7 @@
             </div>
             <div class="rates-spread-stepper">
               <button type="button" class="btn-spread-step" onclick="changeSpreadDelta(-0.5)" title="Reducir spread">−</button>
-              <span class="spread-value-pill" id="spread-value-display">+ 2,0 %</span>
+              <span class="spread-value-pill" id="spread-value-display">+ 0,0 %</span>
               <button type="button" class="btn-spread-step" onclick="changeSpreadDelta(0.5)" title="Aumentar spread">+</button>
             </div>
           </div>
@@ -1247,22 +1242,7 @@
         <!-- Nombre de la Tienda -->
         <div class="form-group" style="margin-bottom:12px;">
           <label for="input-store-name">Nombre de la Tienda</label>
-          <input type="text" id="input-store-name" class="form-control" placeholder="Ej. Central Madeirense, Farmatodo, EPA..." list="store-suggestions" autocomplete="off">
-          <datalist id="store-suggestions">
-            <option value="Central Madeirense">
-            <option value="Excelsior Gama">
-            <option value="Plazas">
-            <option value="Automercados Luz">
-            <option value="Farmatodo">
-            <option value="Farmahorro">
-            <option value="Locatel">
-            <option value="EPA">
-            <option value="Ferretería">
-            <option value="Panadería">
-            <option value="Carnicería">
-            <option value="Bodega / Abasto">
-            <option value="Traki">
-          </datalist>
+          <input type="text" id="input-store-name" class="form-control" placeholder="Ej. Central Madeirense, Farmatodo, EPA..." autocomplete="off">
         </div>
 
         <!-- Tipo de Tienda / Rubro -->
