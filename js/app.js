@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const result = await DolarAPI.fetchLiveRates();
     rates = result.rates;
-    rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 2.0;
+    rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 0.0;
     renderRatesUI();
     renderCartAndTotals();
     renderConfigUI();
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     card.addEventListener('click', () => {
       const rateKey = card.dataset.rate;
       rates = DolarAPI.setSelectedRate(rateKey);
-      rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 2.0;
+      rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 0.0;
       renderRatesUI();
       renderCartAndTotals();
       renderConfigUI();
@@ -481,6 +481,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast('Ticket limpiado', '🗑️');
       }
     });
+  }
+
+  // Botón para copiar el monto total en Bolívares al portapapeles
+  const btnCopyTotalBs = document.getElementById('btn-copy-total-bs');
+  if (btnCopyTotalBs) {
+    btnCopyTotalBs.addEventListener('click', () => {
+      const el = document.getElementById('dark-total-bs');
+      if (!el) return;
+      const text = el.textContent.trim();
+      if (!text || text === 'Bs. 0,00' || text === 'Bs. 0.00') {
+        showToast('El total está en 0 para copiar', '⚠️');
+        return;
+      }
+
+      const iconNormal = btnCopyTotalBs.querySelector('.copy-icon-normal');
+      const iconSuccess = btnCopyTotalBs.querySelector('.copy-icon-success');
+
+      const triggerSuccess = () => {
+        btnCopyTotalBs.classList.add('copied');
+        if (iconNormal) iconNormal.style.display = 'none';
+        if (iconSuccess) iconSuccess.style.display = 'inline-block';
+        showToast(`¡Total copiado: ${text}!`, '📋');
+
+        setTimeout(() => {
+          btnCopyTotalBs.classList.remove('copied');
+          if (iconNormal) iconNormal.style.display = 'inline-block';
+          if (iconSuccess) iconSuccess.style.display = 'none';
+        }, 1500);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(triggerSuccess).catch(() => {
+          fallbackCopyText(text, triggerSuccess);
+        });
+      } else {
+        fallbackCopyText(text, triggerSuccess);
+      }
+    });
+  }
+
+  function fallbackCopyText(text, onSuccess) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (onSuccess) onSuccess();
+    } catch (e) {
+      showToast('No se pudo copiar automáticamente', '⚠️');
+    }
   }
 
   // Variables para gestionar el ticket pendiente y su número correlativo
@@ -2007,7 +2062,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (val > 0 && editingRateKey) {
         DolarAPI.setManualRate(editingRateKey, val);
         rates = DolarAPI.getStoredRates();
-        rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 2.0;
+        rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 0.0;
         renderRatesUI();
         renderCartAndTotals();
         renderConfigUI();
@@ -2105,9 +2160,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // GESTIÓN DE TASAS Y CONFIGURACIONES
   // ==========================================================================
 
-  // Inicializar spread en preferences si no existe
-  if (preferences.spreadPercent === undefined) {
-    preferences.spreadPercent = 2.0;
+  // Inicializar spread en preferences si no existe o restablecer el 2.0 previo al cálculo exacto
+  if (preferences.spreadPercent === undefined || preferences.spreadPercent === 2.0) {
+    preferences.spreadPercent = 0.0;
+    StorageManager.savePreferences(preferences);
   }
   rates.spreadPercent = preferences.spreadPercent;
 
@@ -2277,7 +2333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       rates = DolarAPI.setSelectedRate('usd_custom');
     }
 
-    rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 2.0;
+    rates.spreadPercent = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 0.0;
     renderRatesUI();
     renderCartAndTotals();
     renderConfigUI();
@@ -2343,7 +2399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    * Ajusta el margen de amortiguación (spread) en pasos de +/- 0.5%
    */
   window.changeSpreadDelta = function(delta) {
-    let cur = typeof preferences.spreadPercent === 'number' ? preferences.spreadPercent : 2.0;
+    let cur = typeof preferences.spreadPercent === 'number' ? preferences.spreadPercent : 0.0;
     cur = Math.round((cur + delta) * 10) / 10;
     if (cur < 0) cur = 0;
     if (cur > 15) cur = 15;
@@ -2437,7 +2493,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 4. Spread Stepper
     const spreadValElem = document.getElementById('spread-value-display');
-    const currentSpread = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 2.0;
+    const currentSpread = preferences.spreadPercent !== undefined ? preferences.spreadPercent : 0.0;
     if (spreadValElem) {
       spreadValElem.textContent = `+ ${Calculator.formatNumber(currentSpread, 1)} %`;
     }
@@ -2520,13 +2576,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 2. Preferencias del sistema:
     // - Actualización automática: activo (true)
     // - Frecuencia de sincronización: 2 veces/día ('2d')
-    // - Margen de amortiguación (Spread): + 2,0 % (2.0)
+    // - Margen de amortiguación (Spread): + 0,0 % (0.0)
     // - Moneda predeterminada al agregar productos: USD ('USD')
     preferences.defaultCurrency = 'USD';
     preferences.autoRefresh = true;
     preferences.syncFrequency = '2d';
-    preferences.spreadPercent = 2.0;
+    preferences.spreadPercent = 0.0;
+    rates.spreadPercent = 0.0;
     StorageManager.savePreferences(preferences);
+
+    const spreadValElem = document.getElementById('spread-value-display');
+    if (spreadValElem) {
+      spreadValElem.textContent = '+ 0,0 %';
+    }
 
     // 3. Sincronizar selectores de moneda con banderas
     if (selDefCurrency) {

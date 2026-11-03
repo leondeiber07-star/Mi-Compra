@@ -402,7 +402,7 @@ const StorageManager = {
           defaultCurrency: 'USD',
           autoRefresh: true,
           syncFrequency: '2d',
-          spreadPercent: 2.0,
+          spreadPercent: 0.0,
           ...JSON.parse(data)
         };
         return this._prefsCache;
@@ -413,7 +413,7 @@ const StorageManager = {
       defaultCurrency: 'USD',
       autoRefresh: true,
       syncFrequency: '2d',
-      spreadPercent: 2.0
+      spreadPercent: 0.0
     };
     return this._prefsCache;
   },
