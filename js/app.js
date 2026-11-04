@@ -2763,24 +2763,46 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderConfigUI();
 
   // ==========================================================================
-  // CONTROL DE PANTALLA DE BIENVENIDA / SPLASH SCREEN ANIMADO
+  // CONTROL DE PANTALLA DE BIENVENIDA / CARRITO 2D CON FÍSICA Y TRANSICIÓN
   // ==========================================================================
   const splashScreenEl = document.getElementById('app-splash-screen');
+  const headerCartIcon = document.querySelector('.brand-cart-icon');
+  const headerBrandText = document.querySelector('.brand-text');
+
   if (splashScreenEl) {
+    let splashClosed = false;
+
     const hideSplash = () => {
-      if (splashScreenEl.classList.contains('splash-hidden')) return;
+      if (splashClosed) return;
+      splashClosed = true;
+
+      // Desvanecimiento suave de la pantalla de bienvenida
       splashScreenEl.classList.add('splash-hidden');
+
+      // Animación de llegada y posicionamiento en la barra de la app (Header - Imagen 3)
+      if (headerCartIcon) {
+        headerCartIcon.classList.add('dock-arrival');
+      }
+      if (headerBrandText) {
+        headerBrandText.classList.add('dock-arrival-text');
+      }
+
       setTimeout(() => {
         splashScreenEl.style.display = 'none';
-      }, 580);
+      }, 480);
     };
 
-    // Desvanecer suavemente a los 1.4s tras disfrutar la animación y cargar
-    setTimeout(hideSplash, 1400);
+    // Pausa de 3s en el centro: al acelerar el carrito a los 3.5s, se abre la app
+    const timer = setTimeout(hideSplash, 3500);
 
-    // Ocultar si el usuario toca la pantalla para acceso inmediato
-    splashScreenEl.addEventListener('click', hideSplash);
-    splashScreenEl.addEventListener('touchstart', hideSplash, { passive: true });
+    // Salida inmediata si el usuario hace clic o toca la pantalla
+    const onUserDismiss = () => {
+      clearTimeout(timer);
+      hideSplash();
+    };
+
+    splashScreenEl.addEventListener('click', onUserDismiss);
+    splashScreenEl.addEventListener('touchstart', onUserDismiss, { passive: true });
   }
 
   // Actualizar tasas en vivo en segundo plano al iniciar si está activada la auto-sincronización
