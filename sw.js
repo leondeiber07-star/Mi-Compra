@@ -1,4 +1,4 @@
-const CACHE_NAME = 'micompra-cache-v28';
+const CACHE_NAME = 'micompra-cache-v30';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
