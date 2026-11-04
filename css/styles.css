@@ -7,7 +7,7 @@
   --primary-navy: #0d2c55;
   --primary-navy-dark: #071a33;
   --primary-navy-light: #16437e;
-  --header-bg: linear-gradient(105deg, #093462 0%, #0c3e76 45%, #072d54 100%);
+  --header-bg: linear-gradient(180deg, #071C38 0%, #195FA8 100%);
   
   --accent-green: #10b981;
   --accent-green-dark: #059669;
@@ -113,7 +113,7 @@ body {
   overflow: hidden;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0 4px 16px rgba(9, 52, 98, 0.35);
+  box-shadow: 0 4px 18px rgba(7, 28, 56, 0.38);
   z-index: 30;
   flex-shrink: 0;
 }
@@ -3932,23 +3932,24 @@ body {
 }
 
 /* ==========================================================================
-   PANTALLA DE BIENVENIDA / SPLASH SCREEN ANIMADO
+   PANTALLA DE BIENVENIDA / EL CARRITO RODANDO CON FÍSICA 2D
    ========================================================================== */
 .app-splash-screen {
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background: radial-gradient(circle at 50% 42%, #0e274c 0%, #08162b 60%, #030813 100%);
+  background: radial-gradient(circle at 50% 45%, #0f2442 0%, #0a182d 60%, #040a15 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
-  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), 
-              visibility 0.55s ease, 
-              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.4s ease, 
+              filter 0.4s ease,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .app-splash-screen.splash-hidden {
@@ -3956,91 +3957,326 @@ body {
   visibility: hidden;
   pointer-events: none;
   transform: scale(1.05);
+  filter: blur(8px);
 }
 
-.splash-ambient-glow {
-  position: absolute;
-  top: 42%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(20, 184, 166, 0.12) 45%, transparent 70%);
-  filter: blur(32px);
-  pointer-events: none;
-  animation: splashAmbientPulse 3s ease-in-out infinite alternate;
-}
-
-.splash-content {
+.cart-physics-stage {
   position: relative;
-  z-index: 2;
+  width: 100%;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 24px;
-}
-
-.splash-logo-wrapper {
-  position: relative;
-  width: 116px;
-  height: 116px;
-  margin-bottom: 22px;
-  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.splash-pulse-ring {
+/* Partículas y destellos de fondo */
+.cart-ambient-particles {
   position: absolute;
-  inset: -8px;
-  border-radius: 34px;
-  border: 1.5px solid rgba(56, 189, 248, 0.4);
-  box-shadow: 0 0 28px rgba(56, 189, 248, 0.35), inset 0 0 16px rgba(59, 130, 246, 0.2);
-  animation: splashRingExpand 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  top: 10px;
+  width: 100%;
+  height: 120px;
   pointer-events: none;
 }
 
-.splash-logo-img {
-  width: 104px;
-  height: 104px;
-  border-radius: 26px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 35px rgba(37, 99, 235, 0.45);
-  animation: splashLogoIntro 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  will-change: transform, opacity;
+.sparkle-star {
+  position: absolute;
+  color: #fde047;
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: starSparkle 1.2s ease-in-out infinite alternate;
 }
 
-.splash-brand-group {
-  margin-bottom: 0;
-  animation: splashFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards;
+.sparkle-star.s1 { top: 20%; left: 22%; animation-delay: 0.5s; font-size: 1.2rem; }
+.sparkle-star.s2 { top: 5%; right: 24%; animation-delay: 0.7s; color: #6ee7b7; font-size: 1.4rem; }
+.sparkle-star.s3 { top: 38%; right: 18%; animation-delay: 0.9s; font-size: 0.9rem; }
+
+/* Contenedor del carrito que viaja de izquierda a derecha */
+.cart-runner {
+  position: relative;
+  width: 280px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: cartRunPhysics 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
 }
 
-.splash-title {
-  margin: 0 0 6px 0;
-  font-size: 1.95rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+/* Líneas de humo / derrape al frenar en seco */
+.cart-skid-lines {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
 }
 
-.splash-subtitle {
+.skid-line {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  opacity: 0;
+  animation: skidPuff 0.4s ease 0.42s forwards;
+}
+
+.skid-line.sl-1 { width: 34px; }
+.skid-line.sl-2 { width: 22px; margin-left: 6px; }
+.skid-line.sl-3 { width: 14px; margin-left: 12px; }
+
+.cart-svg-actor {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Chasis que se inclina al frenar y amortigua el impacto */
+.cart-chassis-group {
+  transform-origin: 165px 172px;
+  animation: cartChassisBrakeBounce 3.8s ease-out forwards;
+}
+
+/* Ruedas giratorias */
+.cart-wheel {
+  animation: wheelPhysics 3.8s linear forwards;
+}
+
+/* Moneda 1: Bs. (Dorado) */
+.falling-coin.coin-bs {
+  transform-origin: 112px 85px;
+  animation: coinBsDrop 3.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Moneda 2: $ (Verde) */
+.falling-coin.coin-usd {
+  transform-origin: 160px 74px;
+  animation: coinUsdDrop 3.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Pista / Línea del suelo */
+.cart-floor-track {
+  width: 90%;
+  max-width: 320px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-top: -12px;
+  position: relative;
+  border-radius: 999px;
+}
+
+.cart-track-glow {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(245, 197, 24, 0.7), transparent);
+  filter: blur(2px);
+}
+
+/* Marca Mi Compra que salta de abajo */
+.cart-splash-brand {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  animation: brandPopBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.65s backwards;
+}
+
+.cart-splash-title {
   margin: 0;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #94a3b8;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 197, 24, 0.35);
 }
 
-/* Keyframes de la animación de bienvenida */
-@keyframes splashLogoIntro {
+/* Solo texto limpio sin estilo de botón */
+.cart-splash-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -0.15px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   KEYFRAMES DE FÍSICA 2D REALISTA (CON PAUSA DE 3 SEGUNDOS EN EL CENTRO)
+   ========================================================================== */
+
+/* 1. Recorrido del Carrito: Entra, frena en seco, pausa 3s en el centro y continúa su rumbo */
+@keyframes cartRunPhysics {
+  0% {
+    transform: translateX(-140vw);
+  }
+  11% {
+    transform: translateX(0);
+  }
+  13% {
+    transform: translateX(6px);
+  }
+  15% {
+    transform: translateX(0);
+  }
+  /* Pausa en el centro de ~3 segundos completos */
+  15%, 87% {
+    transform: translateX(0) scale(1);
+  }
+  90% {
+    transform: translateX(-12px) scale(0.98);
+  }
+  100% {
+    transform: translateX(140vw) scale(1.05);
+  }
+}
+
+/* 2. Inclinación del chasis al frenar y amortiguación de las monedas */
+@keyframes cartChassisBrakeBounce {
+  0% {
+    transform: rotate(0deg);
+  }
+  11% {
+    transform: rotate(-10deg) translateY(-4px);
+  }
+  13% {
+    transform: rotate(4deg) translateY(0);
+  }
+  15% {
+    transform: rotate(0deg);
+  }
+  /* Cae la primera moneda (Bs.) */
+  18% {
+    transform: translateY(4px) scaleY(0.95);
+  }
+  21% {
+    transform: translateY(0) scaleY(1);
+  }
+  /* Cae la segunda moneda ($ USD) */
+  24% {
+    transform: translateY(5px) scaleY(0.94);
+  }
+  27% {
+    transform: translateY(0) scaleY(1);
+  }
+  /* Reposo firme en el centro durante la pausa */
+  27%, 87% {
+    transform: rotate(0deg) translateY(0);
+  }
+  /* Aceleración final hacia la derecha */
+  90% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+/* 3. Giro de las ruedas */
+@keyframes wheelPhysics {
+  0% {
+    transform: rotate(0deg);
+  }
+  11% {
+    transform: rotate(900deg);
+  }
+  /* Ruedas quietas durante la pausa en el centro */
+  15%, 87% {
+    transform: rotate(900deg);
+  }
+  90% {
+    transform: rotate(860deg);
+  }
+  100% {
+    transform: rotate(2600deg);
+  }
+}
+
+/* 4. Humo de derrape al frenar en seco */
+@keyframes skidPuff {
   0% {
     opacity: 0;
-    transform: scale(0.65) translateY(22px);
+    transform: translateX(10px) scaleX(0.4);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-4px) scaleX(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-16px) scaleX(1.4);
+  }
+}
+
+/* 5. Caída elástica de la moneda Bs. */
+@keyframes coinBsDrop {
+  0%, 13% {
+    opacity: 0;
+    transform: translateY(-130px) scale(0.4) rotate(-35deg);
+  }
+  17% {
+    opacity: 1;
+    transform: translateY(0) scale(1.1) rotate(0deg);
+  }
+  19% {
+    transform: translateY(-14px) scale(0.95) rotate(5deg);
+  }
+  22% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* 6. Caída elástica de la moneda $ USD */
+@keyframes coinUsdDrop {
+  0%, 19% {
+    opacity: 0;
+    transform: translateY(-140px) scale(0.4) rotate(40deg);
+  }
+  23% {
+    opacity: 1;
+    transform: translateY(0) scale(1.12) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-16px) scale(0.94) rotate(-6deg);
+  }
+  28% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* 7. Destellos de estrellas */
+@keyframes starSparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+  100% {
+    opacity: 0.95;
+    transform: scale(1.2) rotate(45deg);
+  }
+}
+
+/* 8. Rebote del Título */
+@keyframes brandPopBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(20px);
   }
   70% {
-    transform: scale(1.08) translateY(-4px);
+    transform: scale(1.06) translateY(-4px);
   }
   100% {
     opacity: 1;
@@ -4048,40 +4284,44 @@ body {
   }
 }
 
-@keyframes splashRingExpand {
+/* ==========================================================================
+   LLEGADA Y POSICIONAMIENTO EN LA BARRA DEL HEADER (IMAGEN 3)
+   ========================================================================== */
+.brand-cart-icon.dock-arrival {
+  animation: headerCartDockArrival 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes headerCartDockArrival {
   0% {
-    transform: scale(0.95);
-    opacity: 0.85;
+    opacity: 0;
+    transform: translateX(-80px) scale(0.85);
   }
-  50% {
-    transform: scale(1.15);
-    opacity: 0.35;
+  65% {
+    opacity: 1;
+    transform: translateX(4px) scale(1.05);
+  }
+  82% {
+    transform: translateX(-1px) scale(0.99);
   }
   100% {
-    transform: scale(1.30);
-    opacity: 0;
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 
-@keyframes splashAmbientPulse {
-  from {
-    transform: translate(-50%, -50%) scale(0.9);
-    opacity: 0.6;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 1;
-  }
+.brand-text.dock-arrival-text {
+  animation: headerBrandTextFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
 }
 
-@keyframes splashFadeUp {
-  from {
+@keyframes headerBrandTextFade {
+  0% {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateX(-14px);
   }
-  to {
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }
 
