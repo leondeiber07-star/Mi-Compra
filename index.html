@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Mi Compra - Calculadora de Compras Venezuela</title>
   <meta name="description" content="Calculadora de compras para supermercados en Venezuela con tasas DolarAPI en vivo (USD, EUR, Bolívares)">
-  <meta name="theme-color" content="#0d2c55">
+  <meta name="theme-color" content="#071C38">
 
   <!-- Manifest PWA y Favicons -->
   <link rel="manifest" href="manifest.json">
@@ -18,22 +18,114 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Estilos de la aplicación -->
-  <link rel="stylesheet" href="css/styles.css?v=24">
+  <link rel="stylesheet" href="css/styles.css?v=30">
 </head>
 <body>
 
-  <!-- PANTALLA DE BIENVENIDA / SPLASH SCREEN ANIMADO -->
-  <div id="app-splash-screen" class="app-splash-screen" aria-label="Mi Compra">
-    <div class="splash-ambient-glow"></div>
-    <div class="splash-content">
-      <div class="splash-logo-wrapper">
-        <div class="splash-pulse-ring"></div>
-        <img src="icons/icon-512.svg" alt="Mi Compra Logo" class="splash-logo-img">
+  <!-- PANTALLA DE BIENVENIDA CREATIVA / EL CARRITO RODANDO CON FÍSICA 2D -->
+  <div id="app-splash-screen" class="app-splash-screen" aria-label="Mi Compra - Cargando">
+    <div class="cart-physics-stage">
+      
+      <!-- Partículas de destellos sutiles -->
+      <div class="cart-ambient-particles">
+        <span class="sparkle-star s1">✦</span>
+        <span class="sparkle-star s2">★</span>
+        <span class="sparkle-star s3">✦</span>
       </div>
-      <div class="splash-brand-group">
-        <h1 class="splash-title">Mi Compra</h1>
-        <p class="splash-subtitle">Calculadora de Compras</p>
+
+      <!-- El Carrito y Monedas animados con física 2D -->
+      <div class="cart-runner" id="cart-runner">
+        
+        <!-- Líneas de derrape y velocidad -->
+        <div class="cart-skid-lines">
+          <span class="skid-line sl-1"></span>
+          <span class="skid-line sl-2"></span>
+          <span class="skid-line sl-3"></span>
+        </div>
+
+        <svg class="cart-svg-actor" viewBox="0 0 280 200" width="280" height="200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="physCoinUsd" cx="38%" cy="32%" r="68%">
+              <stop offset="0%" stop-color="#6ee7b7"/>
+              <stop offset="55%" stop-color="#10b981"/>
+              <stop offset="100%" stop-color="#047857"/>
+            </radialGradient>
+            <radialGradient id="physCoinBs" cx="38%" cy="32%" r="68%">
+              <stop offset="0%" stop-color="#fef08a"/>
+              <stop offset="55%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#b45309"/>
+            </radialGradient>
+            <radialGradient id="floorShadow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(0,0,0,0.45)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Sombra en el piso -->
+          <ellipse cx="140" cy="188" rx="80" ry="7" fill="url(#floorShadow)" class="cart-floor-shadow"/>
+
+          <!-- Chasis del Carrito que absorbe el impacto de las monedas -->
+          <g class="cart-chassis-group">
+            
+            <!-- Moneda 1: Bs. (Dorado) cayendo y rebotando -->
+            <g class="falling-coin coin-bs">
+              <circle cx="112" cy="85" r="30" fill="url(#physCoinBs)" stroke="#fef08a" stroke-width="2.5"/>
+              <circle cx="112" cy="85" r="24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <text x="112" y="93" fill="#ffffff" font-size="18" font-weight="900" font-family="'Inter', system-ui, sans-serif" text-anchor="middle" filter="drop-shadow(0 2px 2px rgba(0,0,0,0.35))">Bs.</text>
+            </g>
+
+            <!-- Moneda 2: $ USD (Verde) cayendo y rebotando -->
+            <g class="falling-coin coin-usd">
+              <circle cx="160" cy="74" r="36" fill="url(#physCoinUsd)" stroke="#a7f3d0" stroke-width="2.5"/>
+              <circle cx="160" cy="74" r="30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-dasharray="4 2"/>
+              <text x="160" y="86" fill="#ffffff" font-size="28" font-weight="900" font-family="'Inter', system-ui, sans-serif" text-anchor="middle" filter="drop-shadow(0 2px 2px rgba(0,0,0,0.35))">$</text>
+            </g>
+
+            <!-- Cesta del Carrito (Amarillo dorado de Mi Compra) -->
+            <path d="M 45 42 L 72 42 C 82 42 89 48 92 58 L 110 132 C 112 140 120 146 128 146 L 212 146 C 220 146 227 140 229 132 L 244 72 C 246 64 240 58 232 58 L 95 58" stroke="#F5C518" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            
+            <!-- Rejilla metálica de la cesta -->
+            <path d="M 104 98 L 238 98" stroke="#FDE047" stroke-width="4.5" stroke-linecap="round"/>
+            <path d="M 132 60 L 122 144" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 166 60 L 158 144" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/>
+            <path d="M 200 60 L 194 144" stroke="#FDE047" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- Mango blanco del carrito -->
+            <path d="M 40 42 L 68 42" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round"/>
+
+            <!-- Soportes de las ruedas -->
+            <path d="M 125 146 L 125 170" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+            <path d="M 205 146 L 205 170" stroke="#94a3b8" stroke-width="5" stroke-linecap="round"/>
+          </g>
+
+          <!-- Ruedas giratorias con rayos -->
+          <g class="cart-wheel wheel-left" transform-origin="125 172">
+            <circle cx="125" cy="172" r="14" fill="#0f172a" stroke="#F5C518" stroke-width="4"/>
+            <circle cx="125" cy="172" r="6" fill="#F5C518"/>
+            <line x1="125" y1="160" x2="125" y2="184" stroke="#ffffff" stroke-width="2"/>
+            <line x1="113" y1="172" x2="137" y2="172" stroke="#ffffff" stroke-width="2"/>
+          </g>
+
+          <g class="cart-wheel wheel-right" transform-origin="205 172">
+            <circle cx="205" cy="172" r="14" fill="#0f172a" stroke="#F5C518" stroke-width="4"/>
+            <circle cx="205" cy="172" r="6" fill="#F5C518"/>
+            <line x1="205" y1="160" x2="205" y2="184" stroke="#ffffff" stroke-width="2"/>
+            <line x1="193" y1="172" x2="217" y2="172" stroke="#ffffff" stroke-width="2"/>
+          </g>
+        </svg>
       </div>
+
+      <!-- Pista / Línea del suelo con resplandor -->
+      <div class="cart-floor-track">
+        <div class="cart-track-glow"></div>
+      </div>
+
+      <!-- Título de la app que aparece con rebote elástico -->
+      <div class="cart-splash-brand">
+        <h1 class="cart-splash-title">Mi Compra</h1>
+        <p class="cart-splash-subtitle">Calculadora de Compras</p>
+      </div>
+
     </div>
   </div>
 
@@ -1377,10 +1469,10 @@
   </div>
 
   <!-- Scripts modulares -->
-  <script src="js/api.js?v=24"></script>
-  <script src="js/calculator.js?v=24"></script>
-  <script src="js/storage.js?v=24"></script>
-  <script src="js/app.js?v=24"></script>
+  <script src="js/api.js?v=30"></script>
+  <script src="js/calculator.js?v=30"></script>
+  <script src="js/storage.js?v=30"></script>
+  <script src="js/app.js?v=30"></script>
 
   <!-- Service Worker para soporte Offline y Auto-Actualización PWA -->
   <script>
